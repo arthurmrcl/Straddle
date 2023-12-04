@@ -47,7 +47,7 @@ def Is_Connected():
     while not app.isConnected():                                                #Tant que la connexion n'est pas établie, essayer de la rétablir
         try:
             app.connect('127.0.0.1',7496,123)
-            api_thread = threading.Thread(target=run_loop, deamon=True)         # Parralélisme de l'exécution du programme et du programme
+            api_thread = threading.Thread(target=run_loop, deamon=True)         # Parralélisme de l'exécution du programme et de l'API
             api_thread.start()
             tm.sleep(5)         
         except:
@@ -107,8 +107,8 @@ class Straddle(symbol,date_report, day_max):
         app.reqSecDefOptParams(1, self.underlying.symbol, "", "STK",app.conIdContract)
         tm.sleep(2)
 
-        expirations = [datetime.strptime(expiration,'%Y%m%d') for expiration in app.expirations]            #Converti les dates sous le bon format
-        self.strike = min(app.strikes, key=lambda s: abs(s -self.last_quote))                               #Trouver le strike le plus proche de notre spot
+        expirations = [datetime.strptime(expiration,'%Y%m%d') for expiration in app.expirations]            # Converti les dates sous le bon format
+        self.strike = min(app.strikes, key=lambda s: abs(s -self.last_quote))                               # Trouver le strike le plus proche de notre spot
         date_cible = self.ref_date + pd.tseries.offsets.BDay(self.bdday_max)                                # maturité optimale
         self.maturity = min(expirations, key=lambda exp: abs(exp -date_cible))                              # Date de maturité réelle la plus proche
         app.strikes.clear()
