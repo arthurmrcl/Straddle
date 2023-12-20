@@ -124,7 +124,7 @@ class Straddle(symbol,date_report, day_max):
             opt.right = right
             opt.lastTradeDateOrContractMonth = maturity.strftime("%y%m%d")
             opt.strike = self.strike
-            opt.multiplier = '10'
+            opt.multiplier = '100'
             app.reqContractDetails(1,opt)
             tm.sleep(1)
             app.reqMktData(app.conIdContract)
@@ -149,7 +149,7 @@ def Investing(liste,capital):
         strike = liste["strike"].iloc[i]
         date_opt = liste["maturity"].iloc[i]
         weight = liste["vol"].iloc[i] / liste["vol"].sum()                                                # Choix d'une pondération simple par volume, issu des recherches du backtest
-        volume = round(((weight*capital)/((liste["put"].iloc[i] + liste["call"].iloc[i])*10)),0)          # Calcul le volume à acheter
+        volume = round(((weight*capital)/((liste["put"].iloc[i] + liste["call"].iloc[i])*100)),0)          # Calcul le volume à acheter
         if volume >= 1: 
             for right in ["C","P"]:                                                                     # Achat d'un call et d'un put
                 try:
@@ -161,7 +161,7 @@ def Investing(liste,capital):
                     opt.currency = "USD"
                     opt.exchange = "SMART"
                     opt.right = right                                                                   # Définition des options 
-                    opt.multiplier = '10'
+                    opt.multiplier = '100'
                     opt.strike = strike
                     opt.lastTradeDateOrContractMonth = date_opt.strftime("%y%m%d")
                     opt.comboLegsDescrip = '125'                                                        # Permet d'indiquer les positions issues de notre algorithme
